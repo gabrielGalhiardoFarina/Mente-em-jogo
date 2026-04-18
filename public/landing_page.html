@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&family=Inter:wght@400;500&display=swap"
+        rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/landing_page.css">
     <link rel="icon" href="./assets/icon/icon.svg" type="image/svg+xml">
-    <title>GymSafe</title>
+    <title>GymSafe - SPTech</title>
 </head>
 
 <body>
@@ -14,21 +16,23 @@
         <div id="texto_menu">
             GymSafe
         </div>
-        <ul id="lista_menu">
-            <li><a href="#home" id="selecionada">Home</a></li>
-            <li><a href="#sobre">Sobre</a></li>
-            <li><a href="#quem_sou">Quem Sou</a></li>
-            <li><a href="#informativos">Informativos</a></li>
-            <li><a href="./jogo.html">Jogo</a></li>
-            <li><a href="./login.html">Login</a></li>
-            <li><a href="./cadastro.html">Cadastro</a></li>
-        </ul>
+        <nav>
+            <ul id="lista_menu">
+                <li><a href="#home" id="selecionada">Home</a></li>
+                <li><a href="#sobre">Sobre</a></li>
+                <li><a href="#quem_sou">Quem Sou</a></li>
+                <li><a href="#informativos">Informativos</a></li>
+                <li><a href="./jogo.html">Jogo</a></li>
+                <li><a href="./login.html" class="btn-secundario">Login</a></li>
+                <li><a href="./cadastro.html" class="btn-primario">Cadastro</a></li>
+            </ul>
+        </nav>
     </header>
     <main>
         <section id="home">
             <div id="container_home">
                 <h1 id="texto_cta">
-                    Por que a academia se tornou meu
+                    Por que a academia se tornou meu<br>
                     <span>refúgio</span>
                 </h1>
                 <div id="texto_descricao_home">
@@ -39,15 +43,59 @@
                         meio ao caos.
                     </p>
                 </div>
-
             </div>
             <div id="container_personagem_home">
-
             </div>
         </section>
+
         <section id="sobre">
-            <h1>Sobre</h1>
-            <p>Informações sobre o sistema...</p>
+            <div id="container_sobre">
+                
+                <div id="container_texto_sobre">
+                    <h1>Sobre a <span class="texto_verde">GymSafe</span></h1>
+                    <p>
+                        Se você abriu o <span class="texto_azul">feed</span> hoje, provavelmente viu dezenas de <span class="texto_azul">dietas malucas</span>,  
+                        <span class="texto_azul">treinos impossíveis</span>
+                        e
+                        uma pressão gigante para ter uma rotina "<span class="texto_azul">perfeita"</span>. Mas a gente precisa te contar um
+                        segredo: <span class="texto_roxo">ser saudável</span> não precisa ser um sacrifício.
+                    </p>
+                    <p id="destaque-missao">
+                        <b>O <span class="texto_verde">GymSafe</span> é um projeto individual que está sendo desenvolvido na SPTech com uma missão
+                            bem clara:</b>
+                    </p>
+                </div>
+
+
+                <div id="container_valores_sobre">
+                    <div class="linha_valores">
+
+                        <div class="valores">
+                            <h3>O Verdadeiro Equilíbrio</h3>
+                            <p>Cuidar do corpo e da mente não significa abrir mão das coisas que te fazem feliz. O
+                                segredo é
+                                dosar!</p>
+                        </div>
+                        <div class="valores">
+                            <h3>Hábitos Reais, Zero Paranoia</h3>
+                            <p>Esqueça as cobranças impossíveis. Nosso foco é te ajudar a construir uma rotina leve e
+                                possível de manter.</p>
+                        </div>
+                    </div>
+                    <div class="linha_valores">
+                        <div class="valores">
+                            <h3>Saúde para a Vida Toda</h3>
+                            <p>Crie um estilo de vida que faça sentido para a sua realidade, com resultados sustentáveis e
+                                sem sacrifícios extremos.</p>
+                        </div>
+                        <div class="valores">
+                            <h3>Evolução Sem Pressão</h3>
+                            <p>Cada passo conta. A jornada para o bem-estar não é uma corrida de velocidade, mas sim uma
+                                construção diária no seu próprio ritmo.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section id="quem_sou">

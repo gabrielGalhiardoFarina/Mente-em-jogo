@@ -18,7 +18,8 @@
 
 body {
     background-color: #f0f0f0;
-    font-family: Arial, sans-serif;
+    color: var(--text-principal);
+    font-family: 'Poppins', serif;
     margin: 0;
     padding: 0;
 }
@@ -49,22 +50,22 @@ header {
     color: var(--text-principal);
 }
 
-    #lista_menu li a {
-        text-decoration: none;
-        color: var(--text-principal);
-        font-size: 15px;
-        transition: color 0.3s ease;
-    }
+#lista_menu li a {
+    text-decoration: none;
+    color: var(--text-principal);
+    font-size: 15px;
+    transition: color 0.3s ease;
+}
 
-    #lista_menu li a:hover {
-        color: var(--verde-menta);
-    }
+#lista_menu li a:hover {
+    color: var(--verde-menta);
+}
 
-    #lista_menu li a#selecionada{
-        font-weight: bold;
-        color: var(--verde-menta);
-        font-size: 20px;
-    }
+#lista_menu li a#selecionada {
+    font-weight: bold;
+    color: var(--verde-menta);
+    font-size: 20px;
+}
 
 #home {
     height: 85dvh;
@@ -79,15 +80,14 @@ header {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    height: 10  0%;
+    height: 10 0%;
     width: 50dvw;
     padding: 0 3dvw;
-    }
+}
 
 #texto_cta {
-    font-size: 5.5rem;
+    font-size: 4.3rem;
     color: var(--text-branco);
-    font-family: 'Crimson Pro', serif;
 }
 
 
@@ -99,7 +99,7 @@ header {
 #texto_descricao_home {
     width: 50dvw;
     padding: 0 3dvw;
-    font-size: 1.87em;
+    font-size: 1.3em;
     color: var(--text-secundario);
 }
 
@@ -111,13 +111,129 @@ header {
     color: var(--roxo-vibrante);
 }
 
-#container_personagem_home{
+.texto_azul {
+    color: var(--azul-controle);
+}
+
+#container_personagem_home {
     display: flex;
     align-items: center;
-    justify-content: center;    
+    justify-content: center;
     width: 45dvw;
     height: 100%;
     background-image: url(../assets/imgs/personagem/titoForte.svg);
     background-size: contain;
     background-repeat: no-repeat;
+}
+
+#sobre {
+    height: 100dvh;
+    background-color: var(--bg-principal);
+    display: flex;
+    flex-direction: column;
+    padding: 0 3dvw;
+}
+
+#container_sobre {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    gap: 5dvw;
+}
+
+
+#container_texto_sobre h1 {
+    font-size: 3em;
+    margin-top: 18dvh;
+    color: var(--text-branco);
+
+}
+
+#container_texto_sobre {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 50dvw;
+    height: 65%;
+
+}
+
+#container_texto_sobre p {
+    font-size: 1.4em;
+    color: var(--text-principal);
+}
+
+#container_valores_sobre {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 50dvw;
+    gap: 2dvh;
+}
+
+#container_valores_sobre p {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.linha_valores {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 35%;
+    gap: 2dvw;
+}
+
+.valores {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 45%;
+    height: 30dvh;
+    border-radius: 20px;
+    padding: 10px;
+    box-shadow: var(--roxo-vibrante) 0px 0px 10px;
+    border: solid 1px var(--roxo-vibrante);
+}
+
+.valores h3 {
+    text-align: center;
+    width: 100%;
+    color: var(--text-branco);
+    text-shadow:
+        var(--roxo-vibrante-hover) 0px 0px 5px, var(--roxo-vibrante) 0px 0px 10px, var(--roxo-vibrante-hover) 0px 0px 20px;
+}
+
+.valores:hover {
+    animation: hoverCard 3s infinite;
+}
+
+@keyframes hoverCard {
+    0% {
+    box-shadow: var(--roxo-vibrante) 3px 3px 10px;
+    }
+
+    20% {
+        box-shadow: var(--roxo-vibrante-hover) 3px 0px 10px;
+    }
+
+    40% {
+        box-shadow: var(--roxo-vibrante-hover) 3px 3px 10px;
+    }
+
+    60% {
+        box-shadow: var(--roxo-vibrante-hover) -3px 3px 10px;
+    }
+
+    80% {
+        box-shadow: var(--roxo-vibrante) -3px -3px 10px;
+    }
+
+    100% {
+    box-shadow: var(--roxo-vibrante) 3px 3px 10px;
+    }
+
 }
