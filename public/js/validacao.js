@@ -7,7 +7,7 @@ function validarLogin() {
     } else if (senha.length < 6 || senha.length > 20) {
         error_login.innerHTML = "A senha deve ter entre 6 e 20 caracteres.";
     } else {
-        window.location.href = "../public/cadastro.html";
+        window.location.href = "../public/questionario.html";
     }
 }
 

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&family=Inter:wght@400;500&display=swap"
+        rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./assets/icon/icon.svg" type="image/x-icon">
+    <link rel="stylesheet" href="./css/questionario.css">
+    <title>Questionário</title>
+</head>
+
+<body>
+    <div id="container_questionario">   
+        <div id="menu_questionario">
+            <ul>
+                <li id="sair_questionario">
+                    <button onclick="sair()">Sair</button>
+                </li>
+                <li>
+                    <span id="questao_atual">1</span>/18
+                </li>
+            </ul>
+        </div>
+        <div id="contaner_pergunta">
+        </div>
+    </div>
+</body>
+<script>
+
+    let pontosAtividadeFisica = 0;
+    let pontosMobilidade = 0;
+    let pontosSaudeMental = 0;
+    let pontosQualidadeSono = 0;
+    let pontosAlimentacao = 0;
+    let pontosConexaoFamiliar = 0;
+
+    let questaoAtual = 0;
+
+
+    jsonPerguntas = [
+        {
+            "pergunta": "Com que frequência você pratica exercícios físicos atualmente?",
+            "ListaOpcoes": [
+                "Nunca",
+                "1-2 vezes por semana",
+                "3-4 vezes por semana",
+                "5 ou mais vezes por semana"
+            ],
+            "tema": "Atividade Física",
+            "pontos": [10, 20, 30, 40]
+        },
+        {
+            "pergunta": "Qual é o seu nível de atividade física diária (fora dos treinos)?",
+            "ListaOpcoes": [
+                "Sedentário (passo o dia sentado)",
+                "Levemente ativo (algumas caminhadas curtas)",
+                "Moderadamente ativo (movimento constante)",
+                "Altamente ativo (trabalho físico ou movimento intenso)"
+            ],
+            "tema": "Atividade Física",
+            "pontos": [10, 20, 30, 40]
+        },
+        {
+            "pergunta": "Em média, quanto tempo dura cada sessão de exercício que você realiza?",
+            "ListaOpcoes": [
+                "Não me exercito",
+                "Menos de 30 minutos",
+                "De 30 a 60 minutos",
+                "Mais de 60 minutos"
+            ],
+            "tema": "Atividade Física",
+            "pontos": [10, 20, 30, 40]
+        },
+        {
+            "pergunta": "Com que frequência você realiza exercícios de alongamento ou flexibilidade?",
+            "ListaOpcoes": [
+                "Nunca",
+                "Raramente (1-2 vezes por mês)",
+                "Algumas vezes por semana",
+                "Diariamente"
+            ],
+            "tema": "Mobilidade",
+            "pontos": [10, 20, 30, 40]
+        },
+        {
+            "pergunta": "Com que facilidade você consegue alcançar os dedos dos pés com as pernas esticadas?",
+            "ListaOpcoes": [
+                "Não consigo passar dos joelhos",
+                "Alcanço as canelas",
+                "Toco a ponta dos dedos",
+                "Toco as mãos inteiras no chão com facilidade"
+            ],
+            "tema": "Mobilidade",
+            "pontos": [10, 20, 30, 40]
+        },
+        {
+            "pergunta": "Você costuma sentir dores ou rigidez nas articulações ao acordar ou se movimentar?",
+            "ListaOpcoes": [
+                "Frequentemente, limita meus movimentos",
+                "Às vezes, mas passa rápido",
+                "Raramente",
+                "Nunca, sinto meu corpo solto e ágil"
+            ],
+            "tema": "Mobilidade",
+            "pontos": [10, 20, 30, 40]
+        },
+        {
+            "pergunta": "Como você avalia o seu nível de estresse no dia a dia?",
+            "ListaOpcoes": [
+                "Muito alto e constante",
+                "Moderado, com picos frequentes",
+                "Leve e controlável",
+                "Baixo e tranquilo"
+            ],
+            "tema": "Saúde Mental",
+            "pontos": [10, 20, 30, 40]
+        },
+        {
+            "pergunta": "Com que frequência você dedica tempo para hobbies ou atividades que te dão prazer?",
+            "ListaOpcoes": [
+                "Nunca tenho tempo",
+                "Raramente, apenas nos finais de semana",
+                "Algumas horas durante a semana",
+                "Diariamente"
+            ],
+            "tema": "Saúde Mental",
+            "pontos": [10, 20, 30, 40]
+        },
+        {
+            "pergunta": "Como você costuma lidar com sentimentos de ansiedade ou frustração?",
+            "ListaOpcoes": [
+                "Guardo para mim ou desconto em maus hábitos",
+                "Tenho dificuldade, mas tento me acalmar",
+                "Costumo conversar com alguém sobre",
+                "Uso técnicas (respiração, meditação, etc) para gerenciar facilmente"
+            ],
+            "tema": "Saúde Mental",
+            "pontos": [10, 20, 30, 40]
+        },
+        {
+            "pergunta": "Quantas horas, em média, você dorme por noite?",
+            "ListaOpcoes": [
+                "Menos de 5 horas",
+                "Entre 5 e 6 horas",
+                "Entre 6 e 7 horas",
+                "Entre 7 e 8 horas ou mais"
+            ],
+            "tema": "Qualidade do Sono",
+            "pontos": [10, 20, 30, 40]
+        },
+        {
+            "pergunta": "Como você se sente ao acordar pela manhã?",
+            "ListaOpcoes": [
+                "Exausto, como se não tivesse dormido",
+                "Cansado, demoro a engrenar",
+                "Relativamente bem",
+                "Totalmente revigorado e com energia"
+            ],
+            "tema": "Qualidade do Sono",
+            "pontos": [10, 20, 30, 40]
+        },
+        {
+            "pergunta": "Com que facilidade você consegue adormecer ao deitar na cama?",
+            "ListaOpcoes": [
+                "Demoro mais de 1 hora rolando na cama",
+                "Demoro cerca de 30 a 60 minutos",
+                "Pego no sono em menos de 30 minutos",
+                "Adormeço em poucos minutos com facilidade"
+            ],
+            "tema": "Qualidade do Sono",
+            "pontos": [10, 20, 30, 40]
+        },
+        {
+            "pergunta": "Quantos litros de água você costuma beber por dia?",
+            "ListaOpcoes": [
+                "Menos de 1 litro",
+                "Entre 1 e 1,5 litros",
+                "Entre 1,5 e 2,5 litros",
+                "Mais de 2,5 litros"
+            ],
+            "tema": "Alimentação",
+            "pontos": [10, 20, 30, 40]
+        },
+        {
+            "pergunta": "Com que frequência você consome frutas e vegetais frescos?",
+            "ListaOpcoes": [
+                "Raramente ou nunca",
+                "1 a 2 porções por dia",
+                "3 a 4 porções por dia",
+                "5 ou mais porções todos os dias"
+            ],
+            "tema": "Alimentação",
+            "pontos": [10, 20, 30, 40]
+        },
+        {
+            "pergunta": "Com que frequência você consome alimentos ultraprocessados (fast food, refrigerantes, salgadinhos)?",
+            "ListaOpcoes": [
+                "Todos os dias",
+                "Algumas vezes por semana",
+                "Raramente (1 a 2 vezes no mês)",
+                "Nunca ou quase nunca"
+            ],
+            "tema": "Alimentação",
+            "pontos": [10, 20, 30, 40]
+        },
+        {
+            "pergunta": "Com que frequência você realiza refeições junto com sua família ou pessoas que moram com você?",
+            "ListaOpcoes": [
+                "Nunca ou raramente",
+                "Apenas nos finais de semana",
+                "Algumas vezes na semana",
+                "Quase todos os dias"
+            ],
+            "tema": "Conexão Familiar",
+            "pontos": [10, 20, 30, 40]
+        },
+        {
+            "pergunta": "Quanto tempo de qualidade você dedica exclusivamente para interagir com sua família (sem telas)?",
+            "ListaOpcoes": [
+                "Não temos esse hábito",
+                "Algumas horas por mês",
+                "Algumas horas por semana",
+                "Todos os dias temos um momento juntos"
+            ],
+            "tema": "Conexão Familiar",
+            "pontos": [10, 20, 30, 40]
+        },
+        {
+            "pergunta": "Como você avalia a comunicação e a expressão de sentimentos dentro da sua casa?",
+            "ListaOpcoes": [
+                "Não conversamos sobre sentimentos",
+                "É difícil e costuma gerar conflitos",
+                "Conversamos superficialmente",
+                "Temos um diálogo aberto, fácil e acolhedor"
+            ],
+            "tema": "Conexão Familiar",
+            "pontos": [10, 20, 30, 40]
+        }
+    ]
+    
+    function sair() {
+        if (confirm("Tem certeza que deseja sair do questionário?")) {
+            window.location.href = "./landing_page.html";
+        }
+    }   
+
+    function proximaPergunta() {
+        let pergunta = jsonPerguntas[questaoAtual].pergunta;
+        let ListaOpcoes = jsonPerguntas[questaoAtual].ListaOpcoes;
+        let tema = jsonPerguntas[questaoAtual].tema;
+        let pontos = jsonPerguntas[questaoAtual].pontos;
+
+        questaoAtual++;
+        questao_atual.innerHTML = questaoAtual;
+
+        if(questaoAtual == jsonPerguntas.length){
+            //Aqui vou fazer o futuro fech para conseguir resgatar as informações na tela da dashboard
+            alert("pontos do questionario: " + pontosAtividadeFisica + " " + pontosMobilidade + " " + pontosSaudeMental + " " + pontosQualidadeSono + " " + pontosAlimentacao + " " + pontosConexaoFamiliar);
+            window.location.href = "./dashboard.html";
+            return;
+        }
+
+
+        contaner_pergunta.innerHTML = `
+                <h1 id="pergunta">${pergunta}</h1>
+                <div id="opcoes_questionario">
+                    <button class="opcao" id="opcao1" onclick="selecionarOpcao(${pontos[0]}, '${tema}')">${ListaOpcoes[0]}</button>
+                    <button class="opcao" id="opcao2" onclick="selecionarOpcao(${pontos[1]}, '${tema}')">${ListaOpcoes[1]}</button>
+                    <button class="opcao" id="opcao3" onclick="selecionarOpcao(${pontos[2]}, '${tema}')">${ListaOpcoes[2]}</button>
+                    <button class="opcao" id="opcao4" onclick="selecionarOpcao(${pontos[3]}, '${tema}')">${ListaOpcoes[3]}</button>
+                </div>
+                `
+
+    }
+
+    function selecionarOpcao(pontos, tema) {
+        if (tema === "Atividade Física") {
+            pontosAtividadeFisica += pontos;
+        } else if (tema === "Mobilidade") {
+            pontosMobilidade += pontos;
+        } else if (tema === "Saúde Mental") {
+            pontosSaudeMental += pontos;
+        } else if (tema === "Qualidade do Sono") {
+            pontosQualidadeSono += pontos;
+        } else if (tema === "Alimentação") {
+            pontosAlimentacao += pontos;
+        } else if (tema === "Conexão Familiar") {
+            pontosConexaoFamiliar += pontos;
+        }
+
+        proximaPergunta();
+
+    }
+
+    proximaPergunta();
+
+
+
+
+</script>
+
+</html>
