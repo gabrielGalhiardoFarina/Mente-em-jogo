@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
@@ -30,7 +30,9 @@
                     </div>
                     <p id="vida"><span id="vida_atual_html">100</span>/<span id="vida_max_html">100</span></p>
                 </div>
-                <div id="status_vida"></div>
+                <div id="barra_vida" class="barra_status">
+                    <div id="barra_vida_preenchimento" class="preenchimento_status"></div>
+                </div>
             </div>
 
             <div class="bloco_status">
@@ -41,7 +43,9 @@
                     </div>
                     <p id="foco"><span id="foco_atual_html">30</span>/<span id="foco_max_html">100</span></p>
                 </div>
-                <div id="status_foco"></div>
+                <div id="barra_foco" class="barra_status">
+                    <div id="barra_foco_preenchimento" class="preenchimento_status"></div>
+                </div>
             </div>
 
             <div class="bloco_status">
@@ -52,7 +56,9 @@
                     </div>
                     <p id="energia"><span id="energia_atual_html">30</span>/<span id="energia_max_html">100</span></p>
                 </div>
-                <div id="status_energia"></div>
+                <div id="barra_energia" class="barra_status">
+                    <div id="barra_energia_preenchimento" class="preenchimento_status"></div>
+                </div>
             </div>
         </div>
 
@@ -62,12 +68,12 @@
             <div id="titulo_personagem">
                 <h2 id="titulo_h2">Médio</h2>
                 <p id="descricao_p">Auto estima normal</p>
-                <div id="container_progress">
-                    <label for="progress">Evolução:</label>
+                <div id="container_progresso">
+                    <label for="progresso">Evolução:</label>
                     <p><span id="xp_atual_html">0</span>%</p>
                 </div>
-                <div id="progress">
-                    <div id="progress_bar"></div>
+                <div id="progresso">
+                    <div id="barra_progresso"></div>
                 </div>
             </div>
             <div id="personagem">
@@ -78,79 +84,6 @@
             <h1>Como você quer gastar o dia?</h1>
 
             <div id="container_total_opcoes">
-
-                <button class="button_opcoes" onclick="
-                selecionar_opcao(
-                20, 20, 25, 5, [15], ['vida'], this
-                )">
-
-                    <div class="container_opcoes_escolha">
-                        <div class="icons_opcao">
-                            <img src="./assets/imgs/peso.svg" alt="">
-                        </div>
-                        <div class="fundo_opcao">
-                            <img src="./assets/imgs/peso.svg" alt="">
-                        </div>
-                        <h3 class="titulo_opcao">Treinar</h3>
-                        <p class="descricao_opcao">Melhore sua força e resistência</p>
-                        <div class="beneficios_opcoes">
-                            <p class="beneficio_energia">+20 de energia</p>
-                            <p class="beneficio_foco">+25 de foco</p>
-                            <p class="beneficio_xp">+5 de xp</p>
-                        </div>
-                        <div class="custo_opcao">
-                            <p class="custo">Custo: </p>
-                            <p class="div_custo_valor">15 vida</p>
-                        </div>
-                    </div>
-                </button>
-
-                <button class="button_opcoes" onclick="selecionar_opcao(
-                0, 0, 25, 50, [15, 40], ['vida', 'energia'], this
-                )">
-                    <div class="container_opcoes_escolha_ruim">
-                        <div class="icons_opcao_ruim">
-                            <img src="./assets/imgs/tv.svg" alt="">
-                        </div>
-                        <div class="fundo_opcao">
-                            <img src="./assets/imgs/tv.svg" alt="">
-                        </div>
-                        <h3 class="titulo_opcao">Tiktok</h3>
-                        <p class="descricao_opcao">Assistir vídeos até de madrugada</p>
-                        <div class="beneficios_opcoes">
-                            <p class="beneficio_foco">+25 de foco</p>
-                            <p class="beneficio_xp">+50 de xp</p>
-                        </div>
-                        <div class="custo_opcao">
-                            <p class="custo">Custo: </p>
-                            <p class="div_custo_valor">15 vida e 40 energia</p>
-                        </div>
-                    </div>
-                </button>
-
-                <button class="button_opcoes" onclick="selecionar_opcao(
-                10, 0, 25, 12, [18], ['energia'], this
-                )">
-                    <div class="container_opcoes_escolha">
-                        <div class="icons_opcao">
-                            <img src="./assets/imgs/livro.svg" alt="">
-                        </div>
-                        <div class="fundo_opcao">
-                            <img src="./assets/imgs/livro.svg" alt="">
-                        </div>
-                        <h3 class="titulo_opcao">Estudar</h3>
-                        <p class="descricao_opcao">Melhore seu conhecimento e habilidades</p>
-                        <div class="beneficios_opcoes">
-                            <p class="beneficio_vida">+10 de vida</p>
-                            <p class="beneficio_foco">+25 de foco</p>
-                            <p class="beneficio_xp">+12 de xp</p>
-                        </div>
-                        <div class="custo_opcao">
-                            <p class="custo">Custo: </p>
-                            <p class="div_custo_valor">18 energia</p>
-                        </div>
-                    </div>
-                </button>
             </div>
         </section>
     </main>
@@ -197,52 +130,153 @@
             descricao: "Sua auto estima está baixa, você se sente cansado e sem motivação"
         },
         {
+            titulo: "Gordo",
+            descricao: "Sua auto estima está baixa, você se sente bem, mas sabe que ainda não atingiu seu potencial máximo"
+        },
+        {
             titulo: "Médio",
             descricao: "Sua auto estima está normal, você se sente bem, mas sabe que pode melhorar"
         },
         {
-            titulo: "Forte",
-            descricao: "Sua auto estima está alta, você se sente confiante e motivado para enfrentar qualquer desafio"
+            titulo: "Estudioso",
+            descricao: "Sua auto estima está boa, você se sente confiante e motivado para enfrentar os desafios do dia a dia"
         },
         {
             titulo: "Musculoso",
-            descricao: "Sua auto estima está muito alta, você se sente imbatível e pronto para conquistar o mundo"
-        },
-        {
-            titulo: "Hercules",
-            descricao: "Sua auto estima está no auge, você se sente um verdadeiro deus grego, invencível e eterno"
+            descricao: "Sua auto estima está muito boa, você se sente forte e saudável"
         },
         {
             titulo: "Lendário",
-            descricao: "Sua auto estima transcendeu os limites humanos, você se sente uma lenda viva, um mito que inspira gerações"
+            descricao: "Sua auto estima transcendeu os limites humanos, você se sente uma lenda viva"
         }
     ]
 
     let jsonCartas = [
         {
             "status": "boa",
-            "imagem": "./assets/imgs/peso.svg",
-            "titulo": "Treinar",
-            "descricao": "Melhore sua força e resistência",
-            "beneficioEnergia": 20,
-            "beneficioFoco": 25,
+            "imagem": "./assets/icon/zzz.svg",
+            "titulo": "Dormir 8 Horas",
+            "descricao": "Uma noite perfeita de sono reparador.",
+            "beneficioVida": 15,
+            "beneficioEnergia": 30,
             "beneficioXp": 5,
-            "ListaCustoValor": [15],
-            "ListaCustoTexto": ["vida"]
-        },
-        {
-            "status": "ruim",
-            "imagem": "./assets/imgs/tv.svg",
-            "titulo": "Tiktok",
-            "descricao": "Assistir vídeos até de madrugada",
-            "beneficioFoco": 25,
-            "beneficioXp": 22,
-            "ListaCustoValor": [15, 40],
-            "ListaCustoTexto": ["vida", "energia"]
+            "ListaCustoValor": [5],
+            "ListaCustoTexto": ["foco"]
         },
         {
             "status": "boa",
-            "imagem": "./assets/imgs/livro.svg",
+            "imagem": "./assets/icon/panela.svg",
+            "titulo": "Cozinhar em Casa",
+            "descricao": "Refeição nutritiva e balanceada.",
+            "beneficioVida": 20,
+            "beneficioFoco": 10,
+            "beneficioXp": 12,
+            "ListaCustoValor": [15],
+            "ListaCustoTexto": ["energia"]
+        },
+        {
+            "status": "boa",
+            "imagem": "./assets/icon/agua.svg",
+            "titulo": "Beber Água e Alongar",
+            "descricao": "Pequenos hábitos salvam o seu corpo.",
+            "beneficioVida": 10,
+            "beneficioEnergia": 15,
+            "beneficioFoco": 5,
+            "beneficioXp": 5,
+            "ListaCustoValor": [0],
+            "ListaCustoTexto": ["sem custo"]
+        },
+        {
+            "status": "boa",
+            "imagem": "./assets/icon/amigo.svg",
+            "titulo": "Sair com Amigos",
+            "descricao": "Boas risadas recarregam a mente.",
+            "beneficioFoco": 30,
+            "beneficioXp": 15,
+            "ListaCustoValor": [15, 5],
+            "ListaCustoTexto": ["energia", "vida"]
+        },
+        {
+            "status": "boa",
+            "imagem": "./assets/icon/vassoura.svg",
+            "titulo": "Arrumar o Quarto",
+            "descricao": "Ambiente limpo, mente organizada.",
+            "beneficioFoco": 20,
+            "beneficioXp": 10,
+            "ListaCustoValor": [15],
+            "ListaCustoTexto": ["energia"]
+        },
+        {
+            "status": "ruim",
+            "imagem": "./assets/icon/jogar.svg",
+            "titulo": "Virar a Noite Jogando",
+            "descricao": "Foi muito épico, mas cadê a disposição?",
+            "beneficioFoco": 15,
+            "beneficioXp": 30,
+            "ListaCustoValor": [35, 10],
+            "ListaCustoTexto": ["energia", "vida"]
+        },
+        {
+            "status": "ruim",
+            "imagem": "./assets/icon/trabalho.svg",
+            "titulo": "Excesso de Trabalho",
+            "descricao": "Você ignorou o relógio e continuou trabalhando.",
+            "beneficioXp": 25,
+            "ListaCustoValor": [20, 25],
+            "ListaCustoTexto": ["foco", "energia"]
+        },
+        {
+            "status": "ruim",
+            "imagem": "./assets/icon/lanche.svg",
+            "titulo": "Comer Fast Food",
+            "descricao": "Rápido, gostoso e péssimo a longo prazo.",
+            "beneficioEnergia": 25,
+            "beneficioXp": 10,
+            "ListaCustoValor": [15, 10],
+            "ListaCustoTexto": ["vida", "foco"]
+        },
+        {
+            "status": "ruim",
+            "imagem": "./assets/icon/discutir.svg",
+            "titulo": "Discutir na Internet",
+            "descricao": "Você perdeu horas brigando nos comentários.",
+            "beneficioXp": 5,
+            "ListaCustoValor": [25, 5],
+            "ListaCustoTexto": ["foco", "vida"]
+        },
+        {
+            "status": "ruim",
+            "imagem": "./assets/icon/sofa.svg",
+            "titulo": "Procrastinar",
+            "descricao": "Deixar tudo para amanhã gera ansiedade.",
+            "beneficioEnergia": 10,
+            "beneficioXp": 5,
+            "ListaCustoValor": [20],
+            "ListaCustoTexto": ["foco"]
+        },
+        {
+            "status": "boa",
+            "imagem": "./assets/icon/peso.svg",
+            "titulo": "Treinar",
+            "descricao": "Melhore sua força, saúde e resistência.",
+            "beneficioVida": 20,
+            "beneficioFoco": 15,
+            "beneficioXp": 15,
+            "ListaCustoValor": [25],
+            "ListaCustoTexto": ["energia"]
+        },
+        {
+            "status": "ruim",
+            "imagem": "./assets/icon/tiktok.svg",
+            "titulo": "Tiktok",
+            "descricao": "Assistir vídeos curtos até de madrugada.",
+            "beneficioXp": 25,
+            "ListaCustoValor": [20, 15],
+            "ListaCustoTexto": ["foco", "energia"]
+        },
+        {
+            "status": "boa",
+            "imagem": "./assets/icon/livro.svg",
             "titulo": "Estudar",
             "descricao": "Melhore seu conhecimento e habilidades",
             "beneficioVida": 10,
@@ -253,7 +287,7 @@
         },
         {
             "status": "ruim",
-            "imagem": "./assets/imgs/cafe.svg",
+            "imagem": "./assets/icon/pizza.svg",
             "titulo": "Comer Pizza",
             "descricao": "Delicioso, mas não muito saudável",
             "beneficioEnergia": 15,
@@ -263,7 +297,7 @@
         },
         {
             "status": "boa",
-            "imagem": "./assets/imgs/cafe.svg",
+            "imagem": "./assets/icon/cafe.svg",
             "titulo": "Tomar Café",
             "descricao": "Aumenta seu foco e energia",
             "beneficioEnergia": 10,
@@ -273,23 +307,24 @@
         },
         {
             "status": "ruim",
-            "imagem": "./assets/imgs/tv.svg",
+            "imagem": "./assets/icon/tv.svg",
             "titulo": "Ficar no sofá",
             "descricao": "Relaxar é importante, mas cuidado com o excesso",
             "beneficioVida": 5,
             "beneficioEnergia": 10,
-            "ListaCustoValor": [10],
+            "ListaCustoValor": [17],
             "ListaCustoTexto": ["foco"]
         },
         {
             "status": "boa",
-            "imagem": "./assets/imgs/cafe.svg",
+            "imagem": "./assets/icon/meditacao.svg",
             "titulo": "Meditar",
-            "descricao": "Acalma a mente e melhora o foco",
-            "beneficioFoco": 20,
-            "beneficioVida": 5,
-            "ListaCustoValor": [10],
-            "ListaCustoTexto": ["energia"]
+            "descricao": "Acalma a mente, exigindo apenas um pouco de disciplina.",
+            "beneficioFoco": 25,
+            "beneficioEnergia": 10,
+            "beneficioXp": 10,
+            "ListaCustoValor": [5],
+            "ListaCustoTexto": ["foco"]
         }
     ];
 
@@ -428,11 +463,13 @@
             foco_atual_html.innerText = foco_Atual;
             xp_atual_html.innerText = xp_Atual;
 
+            atualizar_status_barras();
+
             dia_atual_html.innerText = dia_atual;
             level_atual_html.innerText = level_atual;
 
 
-            progress_bar.style.width = `${xp_Atual}%`;
+            atualizar_barra_progresso();
 
             titulo_h2.innerText = descricao_personagem[level_atual - 1].titulo;
             descricao_p.innerText = descricao_personagem[level_atual - 1].descricao;
@@ -462,6 +499,25 @@
         clearInterval(cartaAnimacaoOn);
         animacaoBotaoOn = true;
     }
+
+    function converter_para_largura_percentual(valorAtual, valorMaximo) {
+        const valorSeguro = Math.max(0, Math.min(valorAtual, valorMaximo));
+        return `${(valorSeguro / valorMaximo) * 100}%`;
+    }
+
+    function atualizar_barra_progresso() {
+        barra_progresso.style.width = converter_para_largura_percentual(xp_Atual, 100);
+    }
+
+    function atualizar_status_barras() {
+        barra_vida_preenchimento.style.width = converter_para_largura_percentual(vida_Atual, vida_Max);
+        barra_foco_preenchimento.style.width = converter_para_largura_percentual(foco_Atual, foco_Max);
+        barra_energia_preenchimento.style.width = converter_para_largura_percentual(energia_Atual, energia_Max);
+    }
+
+    atualizar_barra_progresso();
+    atualizar_status_barras();
+    cartas_iniciais();
 </script>
 
 </html>

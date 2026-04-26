@@ -84,6 +84,11 @@
       margin-right: 5dvw;
   }
 
+  .bloco_status {
+      width: 12dvw;
+      min-width: 150px;
+  }
+
   .bloco_status div {
       display: flex;
       align-items: center;
@@ -97,9 +102,39 @@
 
   }
 
+  .bloco_status .barra_status {
+      width: 100%;
+      height: 12px;
+      margin-top: 6px;
+      display: flex;
+      justify-content: flex-start;
+      background-color: #101322;
+      border: 1px solid rgba(228, 230, 235, 0.15);
+  }
+
+  .bloco_status .preenchimento_status {
+      height: 100%;
+      display: block;
+      border-radius: 5px;
+  }
+
+  #barra_vida_preenchimento {
+      background: #ff4b6a;
+  }
+
+  #barra_foco_preenchimento {
+      background: #5e64ff;
+  }
+
+  #barra_energia_preenchimento {
+      background: #ffd166;
+  }
+
   .icons {
       filter: invert(1);
       margin-right: 0.6dvw;
+      width: 22px;
+      height: 22px;
   }
 
   #container_player {
@@ -131,7 +166,7 @@
       border: 2px solid var(--text-secundario);
   }
 
-  #container_progress {
+  #container_progresso {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -140,19 +175,24 @@
 
   }
 
-  #progress_bar {
+  #barra_progresso {
       width: 0%;
       height: 100%;
-      background-color: var(--verde-menta);
-      border-radius: 10px;
+      background: linear-gradient(to right, #4bd89c, var(--verde-menta));
+      border-radius: 0;
+      box-shadow: 0 0 10px rgba(116, 235, 175, 0.45);
+      transition: width 240ms ease;
   }
 
-  #progress {
+  #progresso {
       width: 15dvw;
-      height: 20px;
-      background-color: var(--bg-secundario);
+      min-width: 170px;
+      height: 14px;
+      background-color: #101322;
       position: relative;
-      border-radius: 10px;
+      border-radius: 2px;
+      border: 1px solid rgba(228, 230, 235, 0.15);
+      overflow: hidden;
   }
 
   #personagem {
@@ -255,9 +295,14 @@
   }
 
   .icons_opcao {
-      height: auto;
+      width: 44px;
+      height: 44px;
       margin-bottom: 1dvh;
-      padding: 10px;
+      padding: 8px;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       border-radius: 10px;
       background: linear-gradient(to top, #101838, #5162a7);
       position: absolute;
@@ -266,14 +311,25 @@
   }
 
   .icons_opcao_ruim {
-      height: auto;
+      width: 44px;
+      height: 44px;
       margin-bottom: 1dvh;
-      padding: 10px;
+      padding: 8px;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       border-radius: 10px;
       background: linear-gradient(to top, #381010, #a75151);
       position: absolute;
       top: 5%;
       left: 5%;
+  }
+
+  .icons_opcao img,
+  .icons_opcao_ruim img {
+      width: 100%;
+      height: 100%;
   }
 
   .fundo_opcao {
@@ -290,7 +346,7 @@
   }
 
   .titulo_opcao {
-      font-size: 1.8em;
+      font-size: 1.2em;
       margin-bottom: 0;
       color: var(--text-principal);
   }
@@ -309,10 +365,10 @@
 
   .beneficios_opcoes p {
       color: var(--text-principal);
-      padding: 8px 14px;
+      padding: 12px 18px;
       border-radius: 5px;
-      margin: 5px;
-      font-size: 15px;
+      margin: 8px;
+      font-size: 17px;
       font-weight: bold;
   }
 
@@ -404,15 +460,13 @@
       font-weight: 700;
       cursor: pointer;
       color: #fff;
-      background: linear-gradient(to bottom , var(--azul-controle) , var(--azul-controle-hover));
+      background: linear-gradient(to bottom, var(--azul-controle), var(--azul-controle-hover));
   }
 
   #container_game_over button:hover {
-    transition: 500ms;
-    transform: 
-    scale(1.15)
-    rotate(-3deg);
-    background: linear-gradient(to bottom , var(--azul-controle-hover) , var(--azul-controle));
+      transition: 500ms;
+      transform: scale(1.15) rotate(-3deg);
+      background: linear-gradient(to bottom, var(--azul-controle-hover), var(--azul-controle));
   }
 
   body.game-over main,
