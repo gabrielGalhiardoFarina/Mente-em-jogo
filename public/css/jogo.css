@@ -469,11 +469,6 @@
       background: linear-gradient(to bottom, var(--azul-controle-hover), var(--azul-controle));
   }
 
-  body.game-over main,
-  body.game-over header {
-      filter: blur(1px) brightness(0.7);
-  }
-
   @keyframes modalGameOverEntrada {
       from {
           opacity: 0;
@@ -484,4 +479,73 @@
           opacity: 1;
           transform: translateY(0) scale(1);
       }
+  }
+
+  #modal_vitoria {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      background: rgba(5, 8, 18, 0.82);
+      justify-content: center;
+      backdrop-filter: blur(4px);
+      z-index: 9999;
+      padding: 20px;
+  }
+
+  #container_vitoria {
+      width: 30dvw;
+      height: 25dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      border-radius: 18px;
+      border: 1px solid var(--roxo-vibrante);
+      box-shadow: 0 0 5px var(--roxo-vibrante);
+      background: linear-gradient(to top, var(--roxo-vibrante), var(--bg-principal), var(--bg-principal), var(--bg-principal), var(--bg-principal));
+      padding: 28px 24px;
+      text-align: center;
+      animation: modalVitoriaEntrada 0.35s ease;
+  }
+
+  #container_vitoria h1 {
+      margin: 0;
+      color: var(--roxo-vibrante);
+  }
+
+  #vitoria_motivo {
+      margin: 14px 0 22px;
+      color: var(--text-principal);
+      font-size: 1rem;
+  }
+
+  #container_vitoria button {
+      border: none;
+      border-radius: 10px;
+      padding: 12px 22px;
+      font-size: 1.2em;
+      font-weight: 700;
+      cursor: pointer;
+      color: #fff;
+      background: linear-gradient(to bottom, var(--azul-controle), var(--azul-controle-hover));
+  }
+
+  #container_vitoria button:hover {
+      transition: 500ms;
+      transform: scale(1.15) rotate(-3deg);
+      background: linear-gradient(to bottom, var(--azul-controle-hover), var(--azul-controle));
+  }
+
+  @keyframes modalVitoriaEntrada {
+      from {
+          opacity: 0;
+          transform: translateY(14px) scale(0.96);
+      }
+
+      to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+      }
+
   }

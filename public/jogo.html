@@ -94,6 +94,15 @@
             <button onclick="location.reload()">Jogar Novamente</button>
         </div>
     </div>
+
+    <div id="modal_vitoria">
+        <div id="container_vitoria">
+            <h1>Parabéns!</h1>
+            <p id="vitoria_motivo">Você atingiu o nível máximo!</p>
+            <button onclick="location.reload()">Jogar Novamente</button>
+        </div>
+    </div>
+    
 </body>
 
 <script>
@@ -440,6 +449,11 @@
                 return;
             }
 
+            if(level_atual == 8){
+                abrir_modal_vitoria();
+                return;
+            }
+
 
             dia_atual++;
 
@@ -496,6 +510,12 @@
 
     function abrir_modal_game_over() {
         modal_game_over.style.display = "flex";
+        clearInterval(cartaAnimacaoOn);
+        animacaoBotaoOn = true;
+    }
+
+    function abrir_modal_vitoria() {
+        modal_vitoria.style.display = "flex";
         clearInterval(cartaAnimacaoOn);
         animacaoBotaoOn = true;
     }
