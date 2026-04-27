@@ -1,14 +1,66 @@
 function validarLogin() {
     let email = email_input.value;
     let senha = senha_input.value;
+    button_logar.disabled = true;
+    button_logar.innerHTML = "Entrando...";
+
 
     if (email.trim() == "" || senha.trim() == "") {
         error_login.innerHTML = "Por favor, preencha todos os campos.";
+        temErroLogin();
     } else if (senha.length < 6 || senha.length > 20) {
         error_login.innerHTML = "A senha deve ter entre 6 e 20 caracteres.";
+        temErroLogin();
     } else {
-        window.location.href = "../public/questionario.html";
+
+        fetch("/usuarios/autenticar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                emailServer: email,
+                senhaServer: senha
+            })
+        }).then(function (resposta) {
+            console.log("ESTOU NO THEN DO entrar()!")
+
+            if (resposta.ok) {
+                console.log(resposta);
+
+                resposta.json().then(json => {
+                    console.log(json);
+                    console.log(JSON.stringify(json));
+                    sessionStorage.EMAIL_USUARIO = json.email;
+                    sessionStorage.NOME_USUARIO = json.nome;
+                    sessionStorage.ID_USUARIO = json.id;
+                    setTimeout(function () {
+                        window.location = "./questionario.html";
+                    }, 100);
+
+                });
+
+            } else {
+                console.log("Houve um erro ao tentar realizar o login!");
+                resposta.text().then(texto => {
+                    console.error(texto);
+                    temErroLogin();
+                });
+            }
+
+        }).catch(function (erro) {
+            console.log(erro);
+            temErroLogin();
+        })
+
+        return false;
     }
+
+}
+
+function temErroLogin() {
+    button_logar.disabled = false;
+    button_logar.innerHTML = "Entrar";
 }
 
 function validarCadastro() {
@@ -19,7 +71,7 @@ function validarCadastro() {
 
     button_cadastrar.disabled = true;
     button_cadastrar.innerHTML = "Cadastrando...";
-    
+
     if (nome.trim() == "" || email.trim() == "" || senha.trim() == "" || confirmacaoSenha.trim() == "") {
         error_cadastro.innerHTML = "Por favor, preencha todos os campos.";
         temErroCadastro();
