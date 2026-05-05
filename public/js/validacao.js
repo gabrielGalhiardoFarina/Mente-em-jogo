@@ -8,9 +8,6 @@ function validarLogin() {
     if (email.trim() == "" || senha.trim() == "") {
         error_login.innerHTML = "Por favor, preencha todos os campos.";
         temErroLogin();
-    } else if (senha.length < 6 || senha.length > 20) {
-        error_login.innerHTML = "A senha deve ter entre 6 e 20 caracteres.";
-        temErroLogin();
     } else {
 
         fetch("/usuarios/autenticar", {
@@ -44,12 +41,14 @@ function validarLogin() {
                 console.log("Houve um erro ao tentar realizar o login!");
                 resposta.text().then(texto => {
                     console.error(texto);
+                    error_login.innerHTML = "Erro: " + texto;
                     temErroLogin();
                 });
             }
 
-        }).catch(function (erro) {
-            console.log(erro);
+        }).catch(function (resposta) {
+            console.log("Houve um erro ao tentar realizar o login!");
+            console.log(resposta);
             temErroLogin();
         })
 
@@ -109,10 +108,11 @@ function validarCadastro() {
                 }, "2000");
 
             } else {
-                error_cadastro.innerHTML = "Houve um erro ao tentar realizar o cadastro!";
                 temErroCadastro();
-                throw "Houve um erro ao tentar realizar o cadastro!";
-
+                resposta.text().then(texto => {
+                    console.error(texto);
+                    error_cadastro.innerHTML = "Erro: " + texto;
+                });
             }
         })
             .catch(function (resposta) {
