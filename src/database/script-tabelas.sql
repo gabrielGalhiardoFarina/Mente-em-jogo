@@ -69,7 +69,6 @@ CREATE TABLE
 		FOREIGN KEY (fkCard) REFERENCES card (id)
 	);
 
-
 INSERT INTO
 	tema (nome)
 VALUES
@@ -435,3 +434,20 @@ VALUES
 	('vida', 5, 15),
 	('foco', 17, 16),
 	('foco', 5, 17);
+
+SELECT
+	tema.nome AS tema_nome,
+	pergunta.id AS pergunta_id,
+	pergunta.pergunta,
+	-- Se você precisar dos IDs das opções, use GROUP_CONCAT também:
+	GROUP_CONCAT (opcao.id SEPARATOR ', ') AS opcao_ids,
+	GROUP_CONCAT (opcao.opcao SEPARATOR ', ') AS alternativas,
+	GROUP_CONCAT (opcao.pontos SEPARATOR ', ') AS pontos
+FROM
+	tema
+	JOIN pergunta ON tema.id = pergunta.fkTema
+	JOIN opcao ON pergunta.id = opcao.fkPergunta
+GROUP BY
+	pergunta.id,
+	tema.nome,
+	pergunta.pergunta;

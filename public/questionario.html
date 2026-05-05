@@ -17,7 +17,7 @@
         <div id="menu_questionario">
             <ul>
                 <li id="sair_questionario">
-                    <button onclick="sair()">Sair</button>
+                    <button onclick="limparSessao()">Sair</button>
                 </li>
                 <li>
                     <span id="questao_atual">1</span>/18
@@ -58,26 +58,8 @@
             });
     }
 
-    function sair() {
-        if (confirm("Tem certeza que deseja sair do questionário?")) {
-            window.location.href = "./index.html";
-        }
-    }
-
     function proximaPergunta() {
-        let tema = jsonPerguntas[questaoAtual].tema;
-        let pergunta = jsonPerguntas[questaoAtual].pergunta;
-        let listaOpcoes = jsonPerguntas[questaoAtual].listaOpcoes;
-        let ListaOpcoes = [];
-        let pontos = [];
-        
-        for (let i = 0; i < listaOpcoes.length; i++) {
-            ListaOpcoes.push(listaOpcoes[i].opcao);
-            pontos.push(listaOpcoes[i].pontos);
-        }
-        
-        questaoAtual++;
-        questao_atual.innerHTML = questaoAtual;
+
 
         if (questaoAtual == jsonPerguntas.length) {
             fetch("/questionario/cadastrar/pontos", {
@@ -104,11 +86,22 @@
             }).catch(erro => {
                 console.error("Erro na requisição:", erro);
             });
-
-            alert("pontos do questionario: " + pontosAtividadeFisica + " " + pontosMobilidade + " " + pontosSaudeMental + " " + pontosQualidadeSono + " " + pontosAlimentacao + " " + pontosConexaoFamiliar);
             return;
         }
 
+        let tema = jsonPerguntas[questaoAtual].tema;
+        let pergunta = jsonPerguntas[questaoAtual].pergunta;
+        let listaOpcoes = jsonPerguntas[questaoAtual].listaOpcoes;
+        let ListaOpcoes = [];
+        let pontos = [];
+
+        for (let i = 0; i < listaOpcoes.length; i++) {
+            ListaOpcoes.push(listaOpcoes[i].opcao);
+            pontos.push(listaOpcoes[i].pontos);
+        }
+
+        questaoAtual++;
+        questao_atual.innerHTML = questaoAtual;
 
         contaner_pergunta.innerHTML = `
                 <h1 id="pergunta">${pergunta}</h1>

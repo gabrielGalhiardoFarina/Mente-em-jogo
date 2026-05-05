@@ -1,43 +1,362 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&family=Inter:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="shortcut icon" href="./assets/icon/icon.svg" type="image/x-icon">
+    <link rel="stylesheet" href="./css/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="./js/sessao.js"></script>
     <title>Dashboard</title>
 </head>
 
-<body onload="validarSessao()">
-    <h1>Dashboard</h1>
-    <div id="pontosContainer"></div>
-    <button onclick="pegarPontos()">Atualizar Pontos</button>
-</body>
-<script>
-    function pegarPontos() {
-        fetch("/questionario/listar/pontos", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                emailServer: sessionStorage.getItem("EMAIL_USUARIO"),
+<body onload="validarSessao(); carregar_pontos();">
+    <header class="cabecalho_dashboard">
+        <div class="container_logo">
+            <h1>GymSafe</h1>
+        </div>
+
+        <nav class="container_botoes">
+            <button class="botao_secundario" onclick="window.location.href='./questionario.html'">Refazer Quiz</button>
+            <button class="botao_primario" onclick="sair_do_dashboard()">Sair do Dashboard</button>
+        </nav>
+    </header>
+
+    <main class="conteudo_dashboard">
+        <section class="titulo_dashboard">
+            <h2>Análise <span>Completa</span></h2>
+            <p>Baseado em suas respostas, aqui está seu perfil detalhado.</p>
+        </section>
+
+        <section class="kpis_dashboard">
+            <article class="card_kpi">
+                <span class="kpi_titulo">TOTAL DE PONTOS</span>
+                <strong class="kpi_total_valor"><span id="kpi_total_pontos">0</span><span class="kpi_total_maximo">/720
+                        máximo pontos</span></strong>
+                <p>Soma de todas as áreas respondidas.</p>
+            </article>
+            <article class="card_kpi">
+                <span class="kpi_titulo">MAIOR ÁREA</span>
+                <strong id="kpi_maior_area">-</strong>
+                <p>Categoria com a maior pontuação acumulada.</p>
+            </article>
+            <article class="card_kpi">
+                <span class="kpi_titulo" id="kpi_media_geral_titulo">MÉDIA GERAL</span>
+                <strong id="kpi_media_geral" class="kpi_valor_alerta">0</strong>
+                <p>Valor médio entre todas as categorias.</p>
+            </article>
+            <article class="card_kpi">
+                <span class="kpi_titulo" id="kpi_areas_alerta_titulo">ÁREAS EM ALERTA</span>
+                <strong id="kpi_areas_alerta" class="kpi_valor_alerta">0</strong>
+                <p>Áreas com pontuação abaixo do ideal.</p>
+            </article>
+        </section>
+
+        <section class="container_alertas">
+            <div class="cabecalho_painel cabecalho_alertas">
+                <div>
+                    <h3>Alertas de estado</h3>
+                    <p>Mostra de forma simples quando alguma área exige atenção.</p>
+                </div>
+            </div>
+
+            <div id="lista_alertas" class="lista_alertas"></div>
+        </section>
+
+        <section class="container_grafico">
+            <article class="painel_grafico">
+                <div class="cabecalho_painel cabecalho_grafico">
+                    <div>
+                        <h3>Pontos por área</h3>
+                        <p>Visão direta para entender onde estão os maiores pontos.</p>
+                    </div>
+                </div>
+                <div class="container_canvas">
+                    <canvas id="grafico_barras"></canvas>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <script>
+        var dados_pontos = [];
+        var grafico_barras_chart = null;
+        var maximo_pontos = 720;
+        var alerta_limite = 48;
+
+        function carregar_pontos() {
+            var email_usuario = sessionStorage.getItem('EMAIL_USUARIO');
+
+            fetch('/questionario/listar/pontos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    emailServer: email_usuario
+                })
             })
-        }).then(response => response.json())
-            .then(data => {
-                pontosContainer.innerHTML = "";
-                for (let i = 0; i < data.length; i++) {
-                    console.log(data[i]);
-                    pontosContainer.innerHTML += `<p>${data[i].nome}: ${data[i].valor} pontos</p>`;
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    dados_pontos = data;
+                    var pontos_normalizados = normalizar_pontos(dados_pontos);
+
+                    atualizar_kpis(pontos_normalizados);
+                    atualizar_graficos(pontos_normalizados);
+                    atualizar_alertas(pontos_normalizados);
+
+                })
+                .catch(function (erro) {
+                    console.error('Erro ao pegar pontos do questionário:', erro);
+                    dados_pontos = [];
+                    atualizar_kpis([]);
+                    atualizar_graficos([]);
+                    atualizar_alertas([]);
+                    status_carregamento.innerHTML = 'Erro ao carregar';
+                });
+        }
+
+        function normalizar_pontos(lista_pontos) {
+            var resultado = [];
+
+            let idUsuario = sessionStorage.getItem("ID_USUARIO");
+
+            for (var i = 0; i < lista_pontos.length; i++) {
+                var item = lista_pontos[i];
+                var nome;
+                var valor;
+
+                if (item && typeof item == 'object') {
+                    if (item.fkUsuario != idUsuario) {
+                        continue;
+                    }
+                    nome = item.nome;
+                    valor = Number(item.valor);
                 }
 
-            })
-            .catch(error => {
-                console.error("Erro ao pegar pontos do questionário:", error);
-                pontosContainer.innerHTML = "<p>Erro ao carregar pontos. Tente novamente mais tarde.</p>";
-            });
-    }
+                resultado.push({
+                    nome: nome,
+                    valor: valor
+                });
+            }
 
-</script>
+            return resultado;
+        }
+
+        function atualizar_kpis(lista_pontos) {
+            var total = 0;
+            var maiorValor = 0;
+            var maiorNome = '-';
+            var areas_em_alerta = 0;
+
+            for (var i = 0; i < lista_pontos.length; i++) {
+                var ponto = lista_pontos[i];
+                total += ponto.valor;
+
+                if (ponto.valor <= alerta_limite) {
+                    areas_em_alerta++;
+                }
+
+                if (ponto.valor > maiorValor) {
+                    maiorValor = ponto.valor;
+                    maiorNome = ponto.nome;
+                }
+            }
+
+            var media = lista_pontos.length > 0 ? (total / lista_pontos.length) : 0;
+
+            kpi_total_pontos.innerHTML = total;
+            kpi_maior_area.innerHTML = maiorNome;
+            kpi_media_geral.innerHTML = media.toFixed(1);
+
+            var ids_media_geral = ['kpi_media_geral_titulo', 'kpi_media_geral'];
+            for (var i = 0; i < ids_media_geral.length; i++) {
+                var elemento_media = document.getElementById(ids_media_geral[i]);
+                if (elemento_media) {
+                    elemento_media.style.color = media < 60 ? '#FF4B6A' : '';
+                }
+            }
+
+            kpi_areas_alerta.innerHTML = areas_em_alerta;
+
+            var ids_areas_alerta = ['kpi_areas_alerta_titulo', 'kpi_areas_alerta'];
+            for (var i = 0; i < ids_areas_alerta.length; i++) {
+                var elemento_alerta = document.getElementById(ids_areas_alerta[i]);
+                if (elemento_alerta) {
+                    elemento_alerta.style.color = areas_em_alerta > 0 ? '#FF4B6A' : '';
+                }
+            }
+        }
+
+        function atualizar_graficos(lista_pontos) {
+            var nomes = [];
+            var valores = [];
+
+            for (var i = 0; i < lista_pontos.length; i++) {
+                nomes.push(lista_pontos[i].nome);
+                valores.push(lista_pontos[i].valor);
+            }
+
+            if (grafico_barras_chart) {
+                grafico_barras_chart.destroy();
+            }
+
+            var ctx = document.getElementById('grafico_barras').getContext('2d');
+
+            var limiteAlerta = 48;
+
+            var paletaOriginal = [
+                'rgba(116, 235, 175, 0.85)', // Verde
+                'rgba(94, 100, 255, 0.85)',  // Azul 
+                'rgba(255, 193, 92, 0.85)',  // Amarelo
+                'rgba(255, 95, 126, 0.85)',  // Rosa
+                'rgba(137, 108, 255, 0.85)', // Roxo
+                'rgba(70, 205, 190, 0.85)',  // Ciano
+                'rgba(255, 159, 64, 0.85)'   // Laranja
+            ];
+
+            var coresFundo = [];
+            var coresBorda = [];
+
+            for (let i = 0; i < valores.length; i++) {
+                var valor = valores[i];
+                coresFundo.push(valor < limiteAlerta ? 'rgba(255, 69, 58, 0.9)' : paletaOriginal[i]);
+                coresBorda.push(valor < limiteAlerta ? '#FF3B30' : '#FFFFFF');
+            }
+
+            var linhaLimite = Array(nomes.length).fill(limiteAlerta); // Colocando o mesmo número de itens no array da linha
+
+            grafico_barras_chart = new Chart(ctx, {
+                type: 'bar', 
+                data: {
+                    labels: nomes,
+                    datasets: [
+                        {
+                            type: 'line',
+                            label: 'Limite Crítico (40%)',
+                            data: linhaLimite,
+                            borderColor: '#FF3B30', // cor vermelha para linha de limite
+                            borderWidth: 2,
+                            borderDash: [5, 5], // Deixa a linha tracejada
+                            pointRadius: 0, // Esconde as bolinhas dos pontos da linha
+                            fill: false,
+                            order: 0 
+                        },
+                        {
+                            type: 'bar',
+                            label: 'Pontos',
+                            data: valores,
+                            backgroundColor: coresFundo, 
+                            borderColor: coresBorda,
+                            borderWidth: 2,
+                            borderRadius: 8,
+                            borderSkipped: false, // Deixa a borda em todos os lados
+                            barPercentage: 0.7, // Deixa as barras um pouco mais finas
+                            order: 1 
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false, // Permite que o gráfico ocupe todo o espaço disponível
+                    plugins: {
+                        legend: {
+                            display: false // Esconde a legenda para deixar o gráfico mais limpo
+                        },
+                        tooltip: { // Parte que aparece quando passa o mouse  
+                            backgroundColor: 'rgba(30, 30, 30, 0.9)',
+                            titleFont: { family: 'Poppins', size: 13 },
+                            bodyFont: { family: 'Inter', size: 14 },
+                            padding: 12,
+                            cornerRadius: 8,
+                            displayColors: false, // Esconde o quadradinho colorido do tooltip
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#A0AEC0',
+                                font: { family: 'Inter', size: 12, weight: '500' }
+                            },
+                            grid: {
+                                display: false // Tira as linhas vertical do grafico
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            max: 120,
+                            ticks: {
+                                stepSize: 20,
+                                color: '#A0AEC0',
+                                font: { family: 'Inter', size: 12 }
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)',
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function atualizar_alertas(lista_pontos) {
+            var alertas = [];
+
+            for (var i = 0; i < lista_pontos.length; i++) {
+                var ponto = lista_pontos[i];
+
+                if (ponto.valor <= alerta_limite) {
+                    alertas.push({
+                        nivel: 'atencao',
+                        titulo: ponto.nome,
+                        mensagem: 'Área em atenção: vale revisar hábitos e rotina.',
+                        valor: ponto.valor
+                    });
+                }
+            }
+
+            if (alertas.length == 0 && lista_pontos.length > 0) {
+                lista_alertas.innerHTML = `
+                    <article class="card_alerta alerta_sucesso">
+                        <div>
+                            <span class="selo_alerta sucesso">Estável</span>
+                            <h4>Nenhuma área em risco imediato</h4>
+                            <p>Os indicadores atuais estão acima da faixa crítica definida.</p>
+                        </div>
+                    </article>
+                `;
+                return;
+            }
+
+            if(alertas.length > 0) {
+                var html_alertas = '';
+                for (var j = 0; j < alertas.length; j++) {
+                    var alerta = alertas[j];
+                    html_alertas += `
+                        <article class="card_alerta alerta_${alerta.nivel}">
+                            <div>
+                                <span class="selo_alerta ${alerta.nivel}">${alerta.nivel == 'atencao' ? 'Atenção' : 'Crítico'}</span>
+                                <h4>${alerta.titulo}</h4>
+                                <p>${alerta.mensagem}</p>
+                                <small>Pontuação atual: ${alerta.valor}</small>
+                            </div>
+                        </article>
+                    `;
+                }
+                
+                lista_alertas.innerHTML = html_alertas;
+            }
+        }
+
+        function sair_do_dashboard() {
+            limparSessao();
+        }
+    </script>
+</body>
 
 </html>
