@@ -32,7 +32,7 @@ function validarLogin() {
                     sessionStorage.NOME_USUARIO = json.nome;
                     sessionStorage.ID_USUARIO = json.id;
                     setTimeout(function () {
-                        window.location = "./questionario.html";
+                        window.location = "./dashboard.html";
                     }, 100);
 
                 });

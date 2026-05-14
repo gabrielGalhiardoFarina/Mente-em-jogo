@@ -99,6 +99,11 @@
                     return response.json();
                 })
                 .then(function (data) {
+
+                    if (data.length == 0) {
+                        window.location.href = "./questionario.html";
+                        return;
+                    }
                     atualizar_kpis(data);
                     atualizar_graficos(data);
                     atualizar_alertas(data);
