@@ -130,19 +130,7 @@
         {
             titulo: "Sobrepeso",
             descricao: "Você está se sentindo sobrecarregado, cansado e sem energia para enfrentar os desafios do dia a dia"
-        },
-        {
-            titulo: "Doente",
-            descricao: "Você está se sentindo mal, com sintomas que afetam seu bem-estar"
-        },
-        {
-            titulo: "Fraco",
-            descricao: "Sua auto estima está baixa, você se sente cansado e sem motivação"
-        },
-        {
-            titulo: "Gordo",
-            descricao: "Sua auto estima está baixa, você se sente bem, mas sabe que ainda não atingiu seu potencial máximo"
-        },
+        },       
         {
             titulo: "Médio",
             descricao: "Sua auto estima está normal, você se sente bem, mas sabe que pode melhorar"
@@ -223,7 +211,7 @@
                     {"nome": "foco", "valor": 5},
                     {"nome": "xp", "valor": 5}
                 ],
-                "listaCustos": []
+                "listaCustos": [{"nome": "gratis", "valor": 0}]
             },
             {
                 "id": 4,
@@ -554,7 +542,7 @@
                 return;
             }
 
-            if (level_atual == 8) {
+            if (level_atual == 5) {
                 abrir_modal_vitoria();
                 return;
             }
